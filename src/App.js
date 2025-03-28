@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route,  Routes } from 'react-router-dom';
+import { useState } from 'react'; 
+import Login from './Component/Loginpage';
+import UsersList from './Component/UserList';
+import EditUser from './Component/Edituser';
 
 function App() {
+
+  const [users, setUsers] = useState([]); 
+
+  
+  const updateUser = (updatedUser) => {
+    setUsers((prevUsers) => {
+      return prevUsers.map((user) =>
+        user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+      );
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+      <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/users" element={<UsersList/>} />
+        <Route path="/edit/:id" element={<EditUser updateUser={updateUser}/>} />
+      
+      </Routes>
+    </Router>
   );
 }
 
